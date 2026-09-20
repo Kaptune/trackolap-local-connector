@@ -7,7 +7,7 @@ process does not stop the service. Windows restarts the service after a crash.
 
 ## Install and pair
 
-Use the standalone `tlp-connector-1.0.3-x64-setup.exe` (x86 and ARM64 also available).
+Use the standalone `tlp-connector-1.0.4-x64-setup.exe` (x86 and ARM64 also available).
 Run it, accept installation and Windows administrator elevation. Setup installs the
 service and tray, registers tray startup for sign-in, and opens the tray without
 administrator elevation. These builds are unsigned evaluation installers; Windows
@@ -22,13 +22,32 @@ Click the tray icon to open the small native window:
   successful sync, last accepted heartbeat and agent version. Green describes pairing,
   not internet availability; the window distinguishes offline, paused and connected.
 - **Service unavailable:** red with an explanation; the tray retries automatically.
-  Start TrackOlap Connector in Windows Services if it has been stopped manually.
+  Use **Start service** in this window (administrator permission required).
 
 There is no embedded browser dependency and no second copy of the agent database.
 The status refreshes every five seconds. Last successful sync is stored per data source
 and survives a service restart. Heartbeats and TCP connectivity tests are not presented
 as successful data syncs. An unused generic proxy can therefore show `Not yet` for sync
 while its heartbeat is current.
+
+## Stop Application and Reset
+
+Both buttons are available in the tray window before and after pairing. They ask for
+confirmation and Windows administrator permission. Cancelling makes no changes.
+
+- **Stop Application** stops the background service, ends active connections and closes
+  this tray app. It preserves configuration. To resume, open the installed tray app and
+  click **Start service**, or start TrackOlap Connector in Windows Services. The service
+  still starts automatically after a Windows reboot; Stop does not uninstall it.
+- **Reset** stops the service and waits for its process to exit, removes local pairing,
+  host, targets and the cached-work database, then restarts unconfigured with a red icon.
+  Enter a fresh pairing code to reconnect. Logs and the portal's connector record/history
+  are retained; reset does not revoke or delete that remote record. If file removal fails,
+  the service remains stopped and the error is shown.
+
+Reset is supported for the standard installed ProgramData state directory. It does not
+recursively delete folders or follow linked state directories. Other logged-in users'
+tray windows refresh to the new service state.
 
 ## Pairing troubleshooting
 
@@ -59,8 +78,11 @@ Windows restart before cleanup finishes.
 ## Local control boundary
 
 The tray receives a narrow status snapshot and can pair only an unconfigured service.
-It cannot read the API token/secret, export the local console token, stop the service,
-or replace an existing enrollment. Pairing requests are serialized inside the service.
+The ordinary tray cannot read API credentials or export the local console token. The
+interactive-user named pipe still supports only status and initial pairing. Stop, start
+and reset run in a separate administrator helper after UAC approval, using the installed
+service registration and fixed action names. A shared operation lock excludes concurrent
+setup/reset/stop operations. Pairing requests are serialized inside the service.
 The [Windows named pipe](https://learn.microsoft.com/en-us/windows/win32/ipc/named-pipe-security-and-access-rights)
 allows local interactive users, administrators and the service identity. Remote pipe
 clients are rejected. Interactive access excludes permission to create pipe instances.
@@ -74,6 +96,9 @@ No Windows machine was available during implementation. Before production use, v
 on each supported architecture: clean install/UAC, pairing and rejected code, green/red
 tray state, Explorer restart, network loss/recovery, reboot/login, signed-out service
 operation, service crash recovery, upgrade with identity preserved, and uninstall.
+Verify Stop closes the tray and stops the service without deleting configuration; test
+Start service, Reset while paired/unpaired/stopped, UAC cancellation, partial-reset
+errors, fresh-code pairing after reset, and automatic startup after reboot.
 Also verify standard-user pairing/status and that the service's credential directory
 cannot be read by an ordinary local user. Cross-compilation and local tests do not
 replace these Windows checks.

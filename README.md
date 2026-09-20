@@ -6,24 +6,26 @@ Install the TrackOlap background agent to securely reach approved HTTP and TCP s
 
 This public repository contains **end-user downloads and installation instructions only**. Application source and packaging are maintained separately in `trackolap-connector`. Releases are built and published manually; there is no CI/CD.
 
-## Windows service and tray preview — 1.0.3
+## Windows service and tray preview — 1.0.4
 
 The new Windows installer runs the connector as a background service, starts it with
 Windows, and adds a tray app at sign-in. The tray is **red before pairing** and **green
 when configured**. Click it to enter the API host and code, or view connector ID,
 connection status, last successful sync and heartbeat. Closing the window keeps the
-service running.
+service running. **Stop Application** stops the service and exits the tray; **Reset**
+clears local configuration and cached work, then restarts ready for a fresh pairing
+code. Both controls request confirmation and administrator permission.
 
 | Windows architecture | Standalone installer |
 | --- | --- |
-| Intel/AMD 64-bit | [Download x64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.3/tlp-connector-1.0.3-x64-setup.exe) |
-| Intel/AMD 32-bit | [Download x86 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.3/tlp-connector-1.0.3-x86-setup.exe) |
-| ARM64 | [Download ARM64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.3/tlp-connector-1.0.3-arm64-setup.exe) |
+| Intel/AMD 64-bit | [Download x64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-x64-setup.exe) |
+| Intel/AMD 32-bit | [Download x86 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-x86-setup.exe) |
+| ARM64 | [Download ARM64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-arm64-setup.exe) |
 
 **Unsigned Windows preview:** compilation, package inspection and local automated tests
 passed; the updated Windows installation, reboot and tray behavior still require
 validation on Windows. See the [Windows installation guide](WINDOWS_INSTALL.md)
-and [1.0.3 release notes](releases/1.0.3.md). These are self-contained EXE installers;
+and [1.0.4 release notes](releases/1.0.4.md). These are self-contained EXE installers;
 MSI packaging remains pending. The existing macOS/Linux downloads below remain at 1.0.1.
 
 ## Multi-platform downloads — 1.0.1
