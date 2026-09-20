@@ -1,8 +1,10 @@
 # TrackOlap Local Connector
 
+<img src="assets/connector.png" alt="TrackOlap Local Connector" width="128" height="128">
+
 Install the TrackOlap background agent to synchronize local Tally customer ledgers with your TrackOlap account. It initiates outbound connections to TrackOlap; Tally does not need to be exposed to the internet.
 
-This public repository distributes **binaries and installer packaging**. Application source is maintained separately. Download packages from [GitHub Releases](https://github.com/Kaptune/trackolap-local-connector/releases).
+This public repository distributes **end-user builds and installation instructions only**. Application source, icons, tests and all packaging scripts are maintained in the separate `trackolap-connector` repository. Download packages from [GitHub Releases](https://github.com/Kaptune/trackolap-local-connector/releases).
 
 ## Downloads
 
@@ -130,6 +132,6 @@ Keep pairing codes and configuration files private. Uninstall normally preserves
 
 For support, contact your TrackOlap administrator or [TrackOlap](https://www.trackolap.com).
 
-## Maintainers
+## About this repository
 
-See [build/README.md](build/README.md). Generated files stay in ignored `dist/` and are uploaded as release assets, not committed to Git history.
+Releases are prepared and uploaded manually. This repository contains no build scripts or CI/CD workflows. Installers are release assets, not application source or files committed to Git history. The new repository icon is used by refreshed builds; existing draft installers retain the artwork they were built with until a complete replacement build is uploaded.
