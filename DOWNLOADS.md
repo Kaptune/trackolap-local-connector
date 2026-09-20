@@ -24,19 +24,16 @@ architecture as your existing installation when upgrading.
 | ARM64 | [Download ARM64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector-1.0.6-arm64-setup.exe) |
 
 See the [Windows guide](WINDOWS_INSTALL.md) and [release notes](releases/1.0.6.md).
-These installers are unsigned evaluation previews. Automated tests and package checks
-passed; this release has not been installed or tested on Windows. MSI packaging
-remains pending a Windows packaging host.
+The installer, background service and tray app are signed as **Kaptune Media India
+Private Limited**, using SHA-256 and Sectigo timestamps. Signatures and package checks
+passed; Windows installation and runtime validation remain pending.
 
-## Multi-platform downloads — 1.0.6
+## macOS and Linux downloads — 1.0.6
 
 Version **1.0.6**, evaluation prerelease. See the [release notes](https://github.com/Kaptune/trackolap-local-connector/blob/main/releases/1.0.6.md) and [all downloads](https://github.com/Kaptune/trackolap-local-connector/releases/tag/v1.0.6).
 
 | Platform | Architecture | Download |
 | --- | --- | --- |
-| Windows | Intel/AMD 64-bit | [tlp-connector_windows_amd64.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector_windows_amd64.zip) |
-| Windows | Intel/AMD 32-bit | [tlp-connector_windows_386.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector_windows_386.zip) |
-| Windows | ARM64 | [tlp-connector_windows_arm64.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector_windows_arm64.zip) |
 | macOS | Apple silicon | [tlp-connector-1.0.6-arm64.pkg](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector-1.0.6-arm64.pkg) |
 | macOS | Intel | [tlp-connector-1.0.6-amd64.pkg](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector-1.0.6-amd64.pkg) |
 | Debian / Ubuntu | AMD64 | [tlp-connector_1.0.6_amd64.deb](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector_1.0.6_amd64.deb) |
@@ -44,9 +41,9 @@ Version **1.0.6**, evaluation prerelease. See the [release notes](https://github
 | RPM-based Linux | AMD64 | [tlp-connector-1.0.6-1.x86_64.rpm](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector-1.0.6-1.x86_64.rpm) |
 | RPM-based Linux | ARM64 | [tlp-connector-1.0.6-1.aarch64.rpm](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.6/tlp-connector-1.0.6-1.aarch64.rpm) |
 
-Standalone binaries and ZIP / TAR.GZ archives are available for all seven platform/architecture combinations. The Windows ZIP downloads above are portable agents and do not install a service automatically. For automatic startup and the tray app, use the standalone setup EXEs listed above. MSI installers are not included in this release.
+Windows is distributed only as the service-and-tray setup EXEs listed above. Portable Windows EXEs and ZIPs are no longer included in this release. Standalone binaries and TAR.GZ archives remain available for macOS and Linux.
 
-These evaluation builds have no Windows Authenticode signature or macOS Developer ID signing/notarization. Automatic updates are disabled; upgrades are manual. Operating systems may warn about or block unsigned packages. Do not disable system security to install them.
+Windows packages have Authenticode signatures. macOS packages have no Developer ID signing or notarization, and Linux packages are unsigned. This remains an evaluation prerelease. Automatic updates are disabled; upgrades are manual.
 
 ## Verify downloads
 
@@ -65,7 +62,8 @@ shasum -a 256 tlp-connector-1.0.6-arm64.pkg
 On Windows PowerShell:
 
 ```powershell
-Get-FileHash .\tlp-connector_windows_amd64.zip -Algorithm SHA256
+Get-FileHash .\tlp-connector-1.0.6-x64-setup.exe -Algorithm SHA256
+Get-AuthenticodeSignature .\tlp-connector-1.0.6-x64-setup.exe
 ```
 
 Checksums detect corruption; they are not publisher signatures. `BUILDINFO.json` records the source revision, toolchain and validation scope.

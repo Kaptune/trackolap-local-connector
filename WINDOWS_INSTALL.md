@@ -12,8 +12,10 @@ process does not stop the service. Windows restarts the service after a crash.
 Choose the standalone setup for your architecture (x64, x86 or ARM64) from [Downloads](DOWNLOADS.md).
 Run it, accept installation and Windows administrator elevation. Setup installs the
 service and tray, registers tray startup for sign-in, and opens the tray without
-administrator elevation. These builds are unsigned evaluation installers; Windows
-may warn about or block them. Do not bypass your organization's security policy.
+administrator elevation. The current installer, service and tray are Authenticode-signed
+as **Kaptune Media India Private Limited**, with Sectigo timestamps. Check the installer's
+**Properties → Digital Signatures** before installation. Windows runtime validation
+remains pending; follow your organization's application policies.
 
 Click the tray icon to open the small native window. The title and footer show the
 application version even before pairing or when the service is unavailable. Configured

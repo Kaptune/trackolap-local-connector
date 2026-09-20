@@ -20,18 +20,6 @@ Download the standalone setup for your architecture from [Downloads](DOWNLOADS.m
 then follow the [Windows service and tray guide](WINDOWS_INSTALL.md). It covers pairing,
 background startup, upgrades, Stop Application and Reset.
 
-## Windows portable agent
-
-Extract the ZIP to a dedicated folder. From an elevated Command Prompt in that folder, use the executable matching your download; this example is x64:
-
-```bat
-tlp-connector_windows_amd64.exe -version
-tlp-connector_windows_amd64.exe -pair "YOUR-PAIRING-CODE" -server "https://YOUR-API-HOST"
-tlp-connector_windows_amd64.exe
-```
-
-The last command runs in the foreground. Leave it running for connectivity; Ctrl+C stops it. Use `386` for x86 or `arm64` for ARM64. Do not run a second agent against the same state directory while an existing connector service is running. Use the standalone desktop setup above for automatic service installation.
-
 ## macOS
 
 Choose the Apple silicon or Intel PKG from [Downloads](DOWNLOADS.md). In the command below, replace `VERSION` with the downloaded release version:
@@ -94,4 +82,4 @@ The local console is loopback-only and requires a per-run token. A second consol
 | macOS | `/Library/Application Support/TrackOlap/Connector` |
 | Linux | `/var/lib/trackolap-connector`; `journalctl -u tlp-connector` |
 
-Keep pairing codes and configuration files private. Uninstall normally preserves the agent identity; ask your administrator to revoke the agent before permanently retiring it. The Windows desktop setup includes the tray UI; portable agents and macOS/Linux packages run without a desktop tray. For support, contact your TrackOlap administrator or [TrackOlap](https://www.trackolap.com).
+Keep pairing codes and configuration files private. Uninstall normally preserves the agent identity; ask your administrator to revoke the agent before permanently retiring it. The Windows desktop setup includes the tray UI; macOS/Linux packages run without a desktop tray. For support, contact your TrackOlap administrator or [TrackOlap](https://www.trackolap.com).
