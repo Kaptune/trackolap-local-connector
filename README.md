@@ -114,6 +114,18 @@ Upgrade an existing installation using its package manager. Keep its state direc
 
 Portal target management requires the matching backend/frontend deployment and the Local Connector feature flag. HTTP/TCP tests additionally require backend `connector.tcp.enabled=true`. New targets are delivered through configuration polling, then confirmed by heartbeat. No database-specific driver or business integration setup is required for this generic transport.
 
+## Delete a connector that was never seen
+
+With the matching API and portal update deployed, open **Admin → Local Connectors**.
+A **Delete** button is available for connectors whose **Last seen** is empty, including
+connectors marked paired after an unsuccessful installation. Confirm deletion to remove
+the record and invalidate its pairing codes and credentials. Audit history is retained.
+
+A connector that has ever sent a heartbeat cannot be deleted through this action, even
+when offline. If its first heartbeat arrives while deleting, the server refuses the
+request; refresh the list. **Reset** in the Windows tray only clears local configuration
+and does not delete the portal record. This portal feature needs no agent upgrade.
+
 ## Verify downloads
 
 Download `SHA256SUMS` with the assets. On Linux:
@@ -146,4 +158,4 @@ The local console is loopback-only and requires a per-run token. A second consol
 | macOS | `/Library/Application Support/TrackOlap/Connector` |
 | Linux | `/var/lib/trackolap-connector`; `journalctl -u tlp-connector` |
 
-Keep pairing codes and configuration files private. Uninstall normally preserves the agent identity; ask your administrator to revoke the agent before permanently retiring it. These builds have no desktop tray UI. For support, contact your TrackOlap administrator or [TrackOlap](https://www.trackolap.com).
+Keep pairing codes and configuration files private. Uninstall normally preserves the agent identity; ask your administrator to revoke the agent before permanently retiring it. The Windows 1.0.4 setup includes the tray UI; portable agents and macOS/Linux packages run without a desktop tray. For support, contact your TrackOlap administrator or [TrackOlap](https://www.trackolap.com).

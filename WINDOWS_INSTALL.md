@@ -62,6 +62,13 @@ The administrator must deploy the backend pending-activation result fix, then cr
 a fresh connector/code for an installation affected by that bug. Upgrading the tray
 alone does not repair a code whose enrollment response was lost or rejected.
 
+After the matching backend and portal update is deployed, administrators can delete an
+unsuccessful setup from **Admin → Local Connectors** when it has never sent a heartbeat
+(**Last seen** is empty). Paired status alone does not prevent deletion. Previously seen
+connectors remain protected, including after a local Reset. Portal deletion invalidates
+that identity and its pairing codes but preserves audit history; create a fresh
+connector/code for the next pairing attempt. This requires no additional agent upgrade.
+
 ## Updates and uninstall
 
 Run a newer setup of the same architecture to update. Setup stops the service before
