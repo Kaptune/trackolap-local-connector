@@ -1,0 +1,9 @@
+/dist/
+.DS_Store
+*.wixpdb
+*.pfx
+*.p12
+*.key
+pairing.json
+connector.json
+connector.db

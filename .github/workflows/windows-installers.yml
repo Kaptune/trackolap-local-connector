@@ -1,0 +1,77 @@
+name: Build Windows installers
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Numeric release version (existing draft tag vVERSION)
+        required: true
+        default: '1.0.0'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-installers-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    env:
+      VERSION: ${{ inputs.version }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Download and verify draft inputs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:VERSION -notmatch '^\d+\.\d+\.\d+$') { throw 'Invalid version' }
+          $release = gh release view "v$env:VERSION" --json isDraft | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or !$release.isDraft) { throw 'Release must exist and remain a draft' }
+          gh release download "v$env:VERSION" --dir dist
+          if ($LASTEXITCODE -ne 0) { throw 'Download failed' }
+          foreach ($arch in @('amd64','386','arm64')) {
+            $name = "tlp-connector_windows_$arch.exe"
+            $line = @(Get-Content dist/SHA256SUMS | Where-Object { $_ -match "^[a-f0-9]{64}  $([regex]::Escape($name))$" })
+            if ($line.Count -ne 1) { throw "Missing or ambiguous checksum: $name" }
+            $hash = (Get-FileHash "dist/$name" -Algorithm SHA256).Hash.ToLower()
+            if ($hash -ne $line[0].Substring(0,64)) { throw "Checksum mismatch: $name" }
+          }
+      - name: Install pinned WiX tools
+        shell: pwsh
+        run: |
+          dotnet tool install --global wix --version 5.0.2
+          if ($LASTEXITCODE -ne 0) { throw 'WiX install failed' }
+          wix extension add -g WixToolset.Util.wixext/5.0.2
+          if ($LASTEXITCODE -ne 0) { throw 'WiX Util extension failed' }
+          wix extension add -g WixToolset.UI.wixext/5.0.2
+          if ($LASTEXITCODE -ne 0) { throw 'WiX UI extension failed' }
+      - name: Build and inspect all MSIs
+        shell: pwsh
+        run: ./scripts/build-windows.ps1 -Version $env:VERSION
+      - name: Refresh checksums
+        shell: pwsh
+        run: |
+          python scripts/checksums.py dist
+          if ($LASTEXITCODE -ne 0) { throw 'Checksums failed' }
+      - name: Upload to existing draft only
+        shell: pwsh
+        run: |
+          $release = gh release view "v$env:VERSION" --json isDraft | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or !$release.isDraft) { throw 'Refusing to change a published release' }
+          $assets = @(Get-ChildItem dist -File | Where-Object { $_.Name -match '\.msi(\.sha256)?$' -or $_.Name -eq 'SHA256SUMS' } | ForEach-Object { $_.FullName })
+          gh release upload "v$env:VERSION" @assets --clobber
+          if ($LASTEXITCODE -ne 0) { throw 'Upload failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-installers-${{ inputs.version }}
+          path: |
+            dist/*.msi
+            dist/*.msi.sha256
+            dist/SHA256SUMS
+          if-no-files-found: error

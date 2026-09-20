@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  productbuild distribution definition for the TrackOlap Connector.
+
+  A "distribution" (product archive) rather than a bare component package, because only a
+  product archive can be Developer-ID signed AND notarised - and on macOS 10.15+ an
+  un-notarised installer is refused outright, not merely warned about.
+
+  BUNDLE_VERSION is substituted by build-pkg.sh.
+-->
+<installer-gui-script minSpecVersion="2">
+    <title>TrackOlap Connector</title>
+    <organization>com.trackolap</organization>
+
+    <!--
+      hostArchitectures: the payload is a single static Go binary built for one arch per
+      .pkg, so this is set by build-pkg.sh. On Apple silicon an x86_64-only build still runs
+      under Rosetta 2, but we ship a native arm64 build and say so.
+    -->
+    <options customize="never" require-scripts="true" rootVolumeOnly="true" hostArchitectures="HOST_ARCHITECTURE" />
+
+    <!--
+      The connector is a background service, not an app: it must land on the boot volume so
+      the LaunchDaemon path is stable.
+    -->
+    <domains enable_anywhere="false" enable_currentUserHome="false" enable_localSystem="true" />
+
+    <!-- These Go 1.26 builds require macOS 12 Monterey or later. -->
+    <volume-check>
+        <allowed-os-versions>
+            <os-version min="12.0" />
+        </allowed-os-versions>
+    </volume-check>
+
+    <welcome    file="welcome.html"    mime-type="text/html" />
+    <conclusion file="conclusion.html" mime-type="text/html" />
+
+    <pkg-ref id="com.trackolap.connector.pkg" />
+
+    <choices-outline>
+        <line choice="default">
+            <line choice="com.trackolap.connector.pkg" />
+        </line>
+    </choices-outline>
+
+    <choice id="default" />
+    <choice id="com.trackolap.connector.pkg" visible="false">
+        <pkg-ref id="com.trackolap.connector.pkg" />
+    </choice>
+
+    <pkg-ref id="com.trackolap.connector.pkg" version="BUNDLE_VERSION" onConclusion="none">connector-component.pkg</pkg-ref>
+</installer-gui-script>
