@@ -1,5 +1,7 @@
 # Windows service, tray and setup
 
+[Platform guide](README.md) · [Downloads](DOWNLOADS.md) · [Other platforms](INSTALLATION.md)
+
 The Windows desktop build has two processes. `tlp-connector.exe` runs as the automatic
 Windows service under `NT SERVICE\tlp-connector`. `tlp-connector-tray.exe` runs in each
 signed-in user's desktop. Closing the window hides it; signing out or exiting a tray
@@ -7,7 +9,7 @@ process does not stop the service. Windows restarts the service after a crash.
 
 ## Install and pair
 
-Use the standalone `tlp-connector-1.0.4-x64-setup.exe` (x86 and ARM64 also available).
+Choose the standalone setup for your architecture (x64, x86 or ARM64) from [Downloads](DOWNLOADS.md).
 Run it, accept installation and Windows administrator elevation. Setup installs the
 service and tray, registers tray startup for sign-in, and opens the tray without
 administrator elevation. These builds are unsigned evaluation installers; Windows
@@ -58,9 +60,9 @@ response, rate-limit, network or timeout failures without showing credentials.
 If the portal shows **paired** while the tray reports **Pairing failed**, do not keep
 retrying the same code. Pairing status means the server registered the computer;
 **Online** and a recent heartbeat confirm the agent received working credentials.
-The administrator must deploy the backend pending-activation result fix, then create
-a fresh connector/code for an installation affected by that bug. Upgrading the tray
-alone does not repair a code whose enrollment response was lost or rejected.
+Ask your administrator to check the enrollment error and the platform deployment before
+creating a fresh connector/code. Upgrading the tray alone does not repair a code whose
+enrollment response was lost or rejected.
 
 After the matching backend and portal update is deployed, administrators can delete an
 unsuccessful setup from **Admin → Local Connectors** when it has never sent a heartbeat
@@ -82,30 +84,12 @@ and tray startup are removed. Configuration is retained for reinstall; revoke th
 in the portal before permanently retiring the machine. Files still in use may need a
 Windows restart before cleanup finishes.
 
-## Local control boundary
+## Local access and diagnostics
 
-The tray receives a narrow status snapshot and can pair only an unconfigured service.
-The ordinary tray cannot read API credentials or export the local console token. The
-interactive-user named pipe still supports only status and initial pairing. Stop, start
-and reset run in a separate administrator helper after UAC approval, using the installed
-service registration and fixed action names. A shared operation lock excludes concurrent
-setup/reset/stop operations. Pairing requests are serialized inside the service.
-The [Windows named pipe](https://learn.microsoft.com/en-us/windows/win32/ipc/named-pipe-security-and-access-rights)
-allows local interactive users, administrators and the service identity. Remote pipe
-clients are rejected. Interactive access excludes permission to create pipe instances.
-The tray checks the pipe server PID against Windows Service Control Manager before
-sending a pairing code. Requests and responses are bounded, requests time out, and
-only eight simultaneous local requests are accepted.
+Pairing and status are available through the tray. Starting, stopping or resetting the
+service requires Windows administrator approval. Pairing credentials are stored by
+the background service and are not displayed in the tray.
 
-## Windows acceptance checks (not yet executed)
-
-No Windows machine was available during implementation. Before production use, verify
-on each supported architecture: clean install/UAC, pairing and rejected code, green/red
-tray state, Explorer restart, network loss/recovery, reboot/login, signed-out service
-operation, service crash recovery, upgrade with identity preserved, and uninstall.
-Verify Stop closes the tray and stops the service without deleting configuration; test
-Start service, Reset while paired/unpaired/stopped, UAC cancellation, partial-reset
-errors, fresh-code pairing after reset, and automatic startup after reboot.
-Also verify standard-user pairing/status and that the service's credential directory
-cannot be read by an ordinary local user. Cross-compilation and local tests do not
-replace these Windows checks.
+For state and log locations, see [diagnostics and state](INSTALLATION.md#diagnostics-and-state).
+Check [Downloads](DOWNLOADS.md) and the selected release's notes for package signing
+and validation status.

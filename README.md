@@ -2,160 +2,134 @@
 
 <img src="assets/connector.png" alt="TrackOlap Local Connector" width="128" height="128">
 
-Install the TrackOlap background agent to securely reach approved HTTP and TCP services on your local network. The agent initiates outbound HTTPS connections to TrackOlap; local services do not need public inbound ports.
+Connect the TrackOlap platform to approved HTTP and TCP services inside your local
+network. Install a connector on a computer near those services, pair it with your
+TrackOlap account, and manage its destinations and connectivity from the portal.
 
-This public repository contains **end-user downloads and installation instructions only**. Application source and packaging are maintained separately in `trackolap-connector`. Releases are built and published manually; there is no CI/CD.
+[Download a connector](DOWNLOADS.md) · [Installation guide](INSTALLATION.md) · [Release notes](https://github.com/Kaptune/trackolap-local-connector/releases)
 
-## Windows service and tray preview — 1.0.4
+## What you can do
 
-The new Windows installer runs the connector as a background service, starts it with
-Windows, and adds a tray app at sign-in. The tray is **red before pairing** and **green
-when configured**. Click it to enter the API host and code, or view connector ID,
-connection status, last successful sync and heartbeat. Closing the window keeps the
-service running. **Stop Application** stops the service and exits the tray; **Reset**
-clears local configuration and cached work, then restarts ready for a fresh pairing
-code. Both controls request confirmation and administrator permission.
-
-| Windows architecture | Standalone installer |
+| Capability | How you use it |
 | --- | --- |
-| Intel/AMD 64-bit | [Download x64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-x64-setup.exe) |
-| Intel/AMD 32-bit | [Download x86 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-x86-setup.exe) |
-| ARM64 | [Download ARM64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-arm64-setup.exe) |
+| Access local HTTP/HTTPS services | Send requests to an approved destination and inspect its response. |
+| Relay TCP traffic | Provide a connection to an approved local IP address and port for supported TrackOlap workflows. |
+| Control destinations | Add or remove target aliases, IP addresses and ports from the portal. |
+| Check availability | View pairing status, online status and the last received heartbeat. |
+| Test connectivity | Use the HTTP request tester or TCP connection test on the connector detail page. |
+| Review activity | Inspect HTTP/TCP traffic summaries, results, duration, socket IPs and administrative activity. |
 
-**Unsigned Windows preview:** compilation, package inspection and local automated tests
-passed; the updated Windows installation, reboot and tray behavior still require
-validation on Windows. See the [Windows installation guide](WINDOWS_INSTALL.md)
-and [1.0.4 release notes](releases/1.0.4.md). These are self-contained EXE installers;
-MSI packaging remains pending. The existing macOS/Linux downloads below remain at 1.0.1.
+The connector provides generic network transport. Application-specific authentication,
+queries and data processing belong to the application using that connection. A successful
+TCP test confirms a socket can open; it does not run a query or validate application credentials.
 
-## Multi-platform downloads — 1.0.1
+## How it works
 
-Version **1.0.1**, evaluation prerelease. See the [release notes](https://github.com/Kaptune/trackolap-local-connector/blob/main/releases/1.0.1.md) and [all downloads](https://github.com/Kaptune/trackolap-local-connector/releases/tag/v1.0.1).
+1. The connector runs on a computer inside your network and initiates outbound HTTPS
+   communication with TrackOlap. Your local services do not need public inbound ports.
+2. Pairing associates the installed connector with a record in your TrackOlap account.
+3. You approve each destination by alias, IP address and port. The connector applies
+   the configuration and reports its status through heartbeats.
+4. TrackOlap sends an authorized request through the connector to an approved destination.
+   The connector relays the request and response over the established transport.
+5. The portal shows connectivity and activity so you can diagnose failures.
 
-| Platform | Architecture | Download |
-| --- | --- | --- |
-| Windows | Intel/AMD 64-bit | [tlp-connector_windows_amd64.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_windows_amd64.zip) |
-| Windows | Intel/AMD 32-bit | [tlp-connector_windows_386.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_windows_386.zip) |
-| Windows | ARM64 | [tlp-connector_windows_arm64.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_windows_arm64.zip) |
-| macOS | Apple silicon | [tlp-connector-1.0.1-arm64.pkg](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector-1.0.1-arm64.pkg) |
-| macOS | Intel | [tlp-connector-1.0.1-amd64.pkg](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector-1.0.1-amd64.pkg) |
-| Debian / Ubuntu | AMD64 | [tlp-connector_1.0.1_amd64.deb](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_1.0.1_amd64.deb) |
-| Debian / Ubuntu | ARM64 | [tlp-connector_1.0.1_arm64.deb](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_1.0.1_arm64.deb) |
-| RPM-based Linux | AMD64 | [tlp-connector-1.0.1-1.x86_64.rpm](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector-1.0.1-1.x86_64.rpm) |
-| RPM-based Linux | ARM64 | [tlp-connector-1.0.1-1.aarch64.rpm](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector-1.0.1-1.aarch64.rpm) |
+The connector computer must remain running and able to reach both TrackOlap and the
+local destination. A loopback address such as `127.0.0.1` means the connector computer,
+not the computer displaying the portal.
 
-Standalone binaries and ZIP / TAR.GZ archives are available for all seven targets. **Windows MSI installers for 1.0.1 are pending a Windows packaging host**; the Windows downloads above are portable agents and do not install a service automatically. Older 1.0.0 MSIs do not contain these changes.
+## Get started
 
-These evaluation builds have no Windows Authenticode signature or macOS Developer ID signing/notarization. Automatic updates are disabled; upgrades are manual. Operating systems may warn about or block unsigned packages. Do not disable system security to install them.
+1. Ask your administrator to enable **Local Connectors** for your account and provide
+   the API host for your TrackOlap environment.
+2. In **Admin → Local Connectors**, choose **Add connector** and obtain a pairing code.
+3. [Download](DOWNLOADS.md) and [install](INSTALLATION.md) the package for the computer's
+   operating system and architecture.
+4. Enter the API host and pairing code using the installed app or the platform's
+   pairing command. Use the host and code from the same environment.
+5. Open the connector in the portal and wait for **Online** and a recent **Last seen**.
 
-## Before installation
-
-- Ask your TrackOlap administrator to enable Local Connectors, open **Admin → Local Connectors**, and add a connector to obtain a one-time pairing code.
-- Obtain the API server URL for the same environment. Pairing codes expire after 15 minutes.
-- Use Windows 10+/Server 2016+, macOS 12+, or Linux matching the download architecture.
-- Allow outbound HTTPS to your API host and synchronize the system clock.
-- Install on a computer that can reach the HTTP/TCP destinations you want to approve. `127.0.0.1` always means that connector computer.
-
-## Windows portable agent
-
-Extract the ZIP to a dedicated folder. From an elevated Command Prompt in that folder, use the executable matching your download; this example is x64:
-
-```bat
-tlp-connector_windows_amd64.exe -version
-tlp-connector_windows_amd64.exe -pair "YOUR-PAIRING-CODE" -server "https://YOUR-API-HOST"
-tlp-connector_windows_amd64.exe
-```
-
-The last command runs in the foreground. Leave it running for connectivity; Ctrl+C stops it. Use `386` for x86 or `arm64` for ARM64. Do not run a second agent against the same state directory while an existing connector service is running. Persistent Windows service installation via MSI is pending.
-
-## macOS
-
-Choose the Apple silicon or Intel PKG approved by your administrator:
-
-```sh
-sudo installer -pkg ./tlp-connector-1.0.1-arm64.pkg -target /
-sudo /usr/local/bin/tlp-connector -pair "YOUR-PAIRING-CODE" -server "https://YOUR-API-HOST"
-sudo launchctl kickstart -k system/com.trackolap.connector
-```
-
-Use `amd64` in the filename for Intel. The package installs a LaunchDaemon.
-
-## Linux
-
-Debian / Ubuntu, substituting `arm64` when appropriate:
-
-```sh
-sudo apt install ./tlp-connector_1.0.1_amd64.deb
-```
-
-RPM-based systems, substituting `aarch64` when appropriate:
-
-```sh
-sudo dnf install ./tlp-connector-1.0.1-1.x86_64.rpm
-```
-
-For a new installation, pair as the service account:
-
-```sh
-sudo -u trackolap-connector /usr/bin/tlp-connector -pair "YOUR-PAIRING-CODE" -server "https://YOUR-API-HOST"
-sudo systemctl enable tlp-connector
-sudo systemctl restart tlp-connector
-sudo systemctl status tlp-connector
-```
-
-Upgrade an existing installation using its package manager. Keep its state directory to preserve pairing; do not issue a new pairing code for a routine upgrade.
+Pairing codes are single-use and expire after 15 minutes. Keep them private.
 
 ## Configure and test connectivity
 
-1. Open the paired connector's detail page and wait for it to show online.
-2. Under **Approved targets**, add an alias, literal destination IP address, and port. Wait for its status to become **Applied**. Deleting a target blocks new connections and closes the agent's current tunnel generation; applications may need to reconnect.
-3. Use **HTTP test** for a method, relative path, headers and body, or **TCP test** to check socket connectivity. A TCP success does not execute a SQL query or authenticate to the destination application.
-4. Review **HTTP / TCP traffic** and **Recent activity** for results, duration and socket IPs. HTTP test bodies are transient; raw TCP payloads are not retained in traffic logs.
+Open the connector's detail page in **Admin → Local Connectors**.
 
-Portal target management requires the matching backend/frontend deployment and the Local Connector feature flag. HTTP/TCP tests additionally require backend `connector.tcp.enabled=true`. New targets are delivered through configuration polling, then confirmed by heartbeat. No database-specific driver or business integration setup is required for this generic transport.
+1. Under **Approved targets**, add an alias, literal destination IP address and port.
+   Wait for the target to show **Applied** before testing it.
+2. In **HTTP test**, select a target, choose HTTP or HTTPS, and enter the method,
+   relative path, optional headers and body. Inspect the response status, headers,
+   body preview and timing. HTTP requests can modify the destination according to
+   the method and endpoint you choose.
+3. In **TCP test**, select a target and test whether the connector can open a socket.
+   This test sends no application data.
+4. Use **HTTP / TCP traffic** and **Recent activity** to investigate the result.
+
+Removing an approved target prevents new connections and can interrupt existing
+connections while configuration is applied. Features and controls depend on your
+account settings and compatible platform and agent versions.
+
+## Understand connector status
+
+| Status | Meaning |
+| --- | --- |
+| Pending pairing | A connector record exists, but setup has not completed. |
+| Paired / configured | An identity has been registered. Check the heartbeat to confirm live connectivity. |
+| Online | The platform has recently received a heartbeat from the active connector. |
+| Offline | The connector is not reporting a recent heartbeat. Check the service, computer and network. |
+| Last seen | The time of the last heartbeat received by TrackOlap. An empty value means no heartbeat has been received. |
+
+A heartbeat confirms agent availability; it does not prove that every target is reachable.
+Use the protocol tests to check individual destinations. A last-sync time refers to
+completed data work, so it may remain empty when a connector is only used as a generic proxy.
 
 ## Delete a connector that was never seen
 
-With the matching API and portal update deployed, open **Admin → Local Connectors**.
-A **Delete** button is available for connectors whose **Last seen** is empty, including
-connectors marked paired after an unsuccessful installation. Confirm deletion to remove
-the record and invalidate its pairing codes and credentials. Audit history is retained.
+When supported by your platform deployment, the connector list shows **Delete** for
+records with an empty **Last seen**, including paired records left by unsuccessful setup.
+Confirmation removes the connector record and invalidates its identity and pairing
+codes. Audit history is retained.
 
-A connector that has ever sent a heartbeat cannot be deleted through this action, even
-when offline. If its first heartbeat arrives while deleting, the server refuses the
-request; refresh the list. **Reset** in the Windows tray only clears local configuration
-and does not delete the portal record. This portal feature needs no agent upgrade.
+Previously seen connectors remain protected even when offline. If a first heartbeat
+arrives before deletion completes, refresh the list and check the updated status.
+Resetting an installation locally does not delete its portal record.
 
-## Verify downloads
+## Installation and ongoing operation
 
-Download `SHA256SUMS` with the assets. On Linux:
+Windows, macOS and Linux packages share the same portal workflow. Their installation
+and local controls differ:
 
-```sh
-sha256sum --ignore-missing -c SHA256SUMS
-```
+| Platform | Local operation | Guide |
+| --- | --- | --- |
+| Windows desktop setup | Background service with a tray for pairing, status, Start service, Stop Application and Reset. | [Windows guide](WINDOWS_INSTALL.md) |
+| macOS | Background LaunchDaemon, with command-line pairing and service management. | [macOS installation](INSTALLATION.md#macos) |
+| Linux | Background systemd service, with command-line pairing and service management. | [Linux installation](INSTALLATION.md#linux) |
 
-On macOS, compare this output with its entry in `SHA256SUMS`:
+Upgrades are manual. Follow the installation guide to preserve your pairing configuration.
+Available package formats, architectures, release versions and validation limitations
+are listed on the [Downloads page](DOWNLOADS.md).
 
-```sh
-shasum -a 256 tlp-connector-1.0.1-arm64.pkg
-```
+## Troubleshooting
 
-On Windows PowerShell:
-
-```powershell
-Get-FileHash .\tlp-connector_windows_amd64.zip -Algorithm SHA256
-```
-
-Checksums detect corruption; they are not publisher signatures. `BUILDINFO.json` records the source revision, toolchain and validation scope.
-
-## Diagnostics and state
-
-The local console is loopback-only and requires a per-run token. A second console/doctor process can conflict with the running service's database lock. For CLI diagnostics, stop the service, run `-doctor` using the same state directory and service account, then start the service again.
-
-| Platform | State and logs |
+| Symptom | What to check |
 | --- | --- |
-| Windows | `%ProgramData%\TrackOlap\Connector` |
-| macOS | `/Library/Application Support/TrackOlap/Connector` |
-| Linux | `/var/lib/trackolap-connector`; `journalctl -u tlp-connector` |
+| Pairing fails | Confirm the API host and code belong to the same environment. Read the app's error; expired or consumed codes require a fresh code. |
+| Portal says paired, but the app reports failure | Check whether the app saved its configuration and whether a heartbeat arrived. Ask your administrator to investigate enrollment before pairing again. |
+| Connector is offline | Check that the service is running, the computer is awake, outbound HTTPS is allowed and its clock is synchronized. |
+| Target stays pending | Wait for configuration and heartbeat updates; confirm the connector is online and supports portal target management. |
+| TCP test fails | Check the approved IP/port, destination service and local firewall from the connector computer. |
+| HTTP returns an error | Inspect the HTTP status and response preview, then check the path, method, headers and destination application. |
+| A control is unavailable | Ask your administrator to check account features, platform deployment and agent compatibility. |
 
-Keep pairing codes and configuration files private. Uninstall normally preserves the agent identity; ask your administrator to revoke the agent before permanently retiring it. The Windows 1.0.4 setup includes the tray UI; portable agents and macOS/Linux packages run without a desktop tray. For support, contact your TrackOlap administrator or [TrackOlap](https://www.trackolap.com).
+Traffic history contains request metadata and connection summaries; the generic test
+response preview is transient, and raw TCP payloads are not retained in traffic logs.
+See [diagnostics and state](INSTALLATION.md#diagnostics-and-state) for local logs. Keep
+pairing codes and configuration files private when sharing diagnostic information.
+
+## About this repository
+
+This public repository contains end-user downloads and guides for the TrackOlap
+connector. Application source and packaging are maintained separately. Release-specific
+changes are recorded in the [release notes](https://github.com/Kaptune/trackolap-local-connector/releases).
+For help with your account or deployment, contact your TrackOlap administrator or
+[TrackOlap](https://www.trackolap.com).
