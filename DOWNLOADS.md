@@ -6,18 +6,18 @@ Choose the package for the operating system and architecture of the computer run
 the connector. Platform releases can have different versions. The platform guide
 explains shared capabilities; each release describes its package-specific changes.
 
-## Windows desktop installer — 1.0.4
+## Windows desktop installer — 1.0.5
 
 The standalone EXE installs the background service and tray app. Choose the same
 architecture as your existing installation when upgrading.
 
 | Windows architecture | Standalone installer |
 | --- | --- |
-| Intel/AMD 64-bit | [Download x64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-x64-setup.exe) |
-| Intel/AMD 32-bit | [Download x86 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-x86-setup.exe) |
-| ARM64 | [Download ARM64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.4/tlp-connector-1.0.4-arm64-setup.exe) |
+| Intel/AMD 64-bit | [Download x64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.5/tlp-connector-1.0.5-x64-setup.exe) |
+| Intel/AMD 32-bit | [Download x86 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.5/tlp-connector-1.0.5-x86-setup.exe) |
+| ARM64 | [Download ARM64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.5/tlp-connector-1.0.5-arm64-setup.exe) |
 
-See the [Windows guide](WINDOWS_INSTALL.md) and [release notes](releases/1.0.4.md).
+See the [Windows guide](WINDOWS_INSTALL.md) and [release notes](releases/1.0.5.md).
 These installers are unsigned evaluation previews. Compilation and automated checks
 passed; installation, reboot, UAC and tray behavior still require Windows runtime
 validation. MSI packaging for this desktop release remains pending.

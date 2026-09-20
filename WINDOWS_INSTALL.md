@@ -15,7 +15,9 @@ service and tray, registers tray startup for sign-in, and opens the tray without
 administrator elevation. These builds are unsigned evaluation installers; Windows
 may warn about or block them. Do not bypass your organization's security policy.
 
-Click the tray icon to open the small native window:
+Click the tray icon to open the small native window. The title and footer show the
+application version even before pairing or when the service is unavailable. Configured
+status also shows the background agent version.
 
 - **Red, not configured:** enter the HTTPS API host (a bare hostname is accepted),
   pairing code, then **Start**. A rejected/expired code leaves the form available with
@@ -83,6 +85,17 @@ Use **Windows Settings → Apps → TrackOlap Local Connector → Uninstall**. T
 and tray startup are removed. Configuration is retained for reinstall; revoke the agent
 in the portal before permanently retiring the machine. Files still in use may need a
 Windows restart before cleanup finishes.
+
+## Upgrade permission errors
+
+If an older setup reports `icacls.exe failed: exit status 5` during an upgrade, use the
+current standalone installer from [Downloads](DOWNLOADS.md), choosing the same architecture.
+Accept Windows administrator approval. Setup repairs access to the connector's state
+folder while preserving saved pairing and configuration; **Reset** is not required.
+
+If repair cannot finish, setup identifies the failed operation and path and leaves the
+service stopped. Share that error with your administrator. Linked or redirected state
+folders are not supported by the repair. Check the release notes for validation status.
 
 ## Local access and diagnostics
 
