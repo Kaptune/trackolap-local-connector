@@ -7,7 +7,7 @@ process does not stop the service. Windows restarts the service after a crash.
 
 ## Install and pair
 
-Use the standalone `tlp-connector-1.0.2-x64-setup.exe` (x86 and ARM64 also available).
+Use the standalone `tlp-connector-1.0.3-x64-setup.exe` (x86 and ARM64 also available).
 Run it, accept installation and Windows administrator elevation. Setup installs the
 service and tray, registers tray startup for sign-in, and opens the tray without
 administrator elevation. These builds are unsigned evaluation installers; Windows
@@ -29,6 +29,19 @@ The status refreshes every five seconds. Last successful sync is stored per data
 and survives a service restart. Heartbeats and TCP connectivity tests are not presented
 as successful data syncs. An unused generic proxy can therefore show `Not yet` for sync
 while its heartbeat is current.
+
+## Pairing troubleshooting
+
+The host and code stay in the window after a failed attempt; the code is cleared only
+when the service confirms it is configured. Errors identify API rejection, server,
+response, rate-limit, network or timeout failures without showing credentials.
+
+If the portal shows **paired** while the tray reports **Pairing failed**, do not keep
+retrying the same code. Pairing status means the server registered the computer;
+**Online** and a recent heartbeat confirm the agent received working credentials.
+The administrator must deploy the backend pending-activation result fix, then create
+a fresh connector/code for an installation affected by that bug. Upgrading the tray
+alone does not repair a code whose enrollment response was lost or rejected.
 
 ## Updates and uninstall
 
