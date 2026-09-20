@@ -61,7 +61,7 @@
       passed to tlp-connector.exe -pair, which writes it 0600 into the state directory and
       never echoes it. Secure="yes" lets it survive the elevation boundary on a /qn install.
     -->
-    <Property Id="PAIRCODE" Secure="yes" />
+    <Property Id="PAIRCODE" Secure="yes" Hidden="yes" />
     <Property Id="SERVERURL" Secure="yes" Value="https://api.trackolap.com" />
 
     <!--
@@ -286,8 +286,7 @@
                   HideTarget="yes"
                   Return="check" />
 
-    <!-- MsiHiddenProperties keeps PAIRCODE out of the verbose (/l*v) install log. -->
-    <Property Id="MsiHiddenProperties" Value="PAIRCODE" />
+    <!-- Hidden="yes" above adds PAIRCODE to WiX-generated MsiHiddenProperties. -->
 
     <InstallExecuteSequence>
       <!--
