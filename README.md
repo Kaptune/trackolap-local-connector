@@ -129,7 +129,7 @@ pairing codes and configuration files private when sharing diagnostic informatio
 ## About this repository
 
 This public repository contains end-user downloads and guides for the TrackOlap
-connector. Application source and packaging are maintained separately. Release-specific
-changes are recorded in the [release notes](https://github.com/Kaptune/trackolap-local-connector/releases).
+connector. Release-specific changes are recorded in the
+[release notes](https://github.com/Kaptune/trackolap-local-connector/releases).
 For help with your account or deployment, contact your TrackOlap administrator or
 [TrackOlap](https://www.trackolap.com).
