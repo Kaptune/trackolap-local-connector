@@ -2,84 +2,77 @@
 
 <img src="assets/connector.png" alt="TrackOlap Local Connector" width="128" height="128">
 
-Install the TrackOlap background agent to synchronize local Tally customer ledgers with your TrackOlap account. It initiates outbound connections to TrackOlap; Tally does not need to be exposed to the internet.
+Install the TrackOlap background agent to securely reach approved HTTP and TCP services on your local network. The agent initiates outbound HTTPS connections to TrackOlap; local services do not need public inbound ports.
 
-This public repository distributes **end-user builds and installation instructions only**. Application source, icons, tests and all packaging scripts are maintained in the separate `trackolap-connector` repository. Download packages from [GitHub Releases](https://github.com/Kaptune/trackolap-local-connector/releases).
+This public repository contains **end-user downloads and installation instructions only**. Application source and packaging are maintained separately in `trackolap-connector`. Releases are built and published manually; there is no CI/CD.
 
 ## Downloads
 
-Version: **1.0.0**. Read the [release notes](releases/1.0.0.md). Assets become publicly downloadable when the release is published; drafts are visible only to maintainers.
+Version **1.0.1**, evaluation prerelease. See the [release notes](https://github.com/Kaptune/trackolap-local-connector/blob/main/releases/1.0.1.md) and [all downloads](https://github.com/Kaptune/trackolap-local-connector/releases/tag/v1.0.1).
 
-| Platform | Architecture | Installer |
+| Platform | Architecture | Download |
 | --- | --- | --- |
-| Windows | Intel/AMD 64-bit | `tlp-connector-1.0.0-x64.msi` |
-| Windows | Intel/AMD 32-bit | `tlp-connector-1.0.0-x86.msi` |
-| Windows | ARM64 | `tlp-connector-1.0.0-arm64.msi` |
-| macOS | Apple silicon | `tlp-connector-1.0.0-arm64.pkg` |
-| macOS | Intel | `tlp-connector-1.0.0-amd64.pkg` |
-| Debian / Ubuntu | AMD64 | `tlp-connector_1.0.0_amd64.deb` |
-| Debian / Ubuntu | ARM64 | `tlp-connector_1.0.0_arm64.deb` |
-| RPM-based Linux | AMD64 | `tlp-connector-1.0.0-1.x86_64.rpm` |
-| RPM-based Linux | ARM64 | `tlp-connector-1.0.0-1.aarch64.rpm` |
+| Windows | Intel/AMD 64-bit | [tlp-connector_windows_amd64.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_windows_amd64.zip) |
+| Windows | Intel/AMD 32-bit | [tlp-connector_windows_386.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_windows_386.zip) |
+| Windows | ARM64 | [tlp-connector_windows_arm64.zip](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_windows_arm64.zip) |
+| macOS | Apple silicon | [tlp-connector-1.0.1-arm64.pkg](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector-1.0.1-arm64.pkg) |
+| macOS | Intel | [tlp-connector-1.0.1-amd64.pkg](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector-1.0.1-amd64.pkg) |
+| Debian / Ubuntu | AMD64 | [tlp-connector_1.0.1_amd64.deb](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_1.0.1_amd64.deb) |
+| Debian / Ubuntu | ARM64 | [tlp-connector_1.0.1_arm64.deb](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector_1.0.1_arm64.deb) |
+| RPM-based Linux | AMD64 | [tlp-connector-1.0.1-1.x86_64.rpm](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector-1.0.1-1.x86_64.rpm) |
+| RPM-based Linux | ARM64 | [tlp-connector-1.0.1-1.aarch64.rpm](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.1/tlp-connector-1.0.1-1.aarch64.rpm) |
 
-Standalone binaries and ZIP / TAR.GZ archives are supplied for all seven targets. Windows archive names use `amd64` for x64 and `386` for x86. Archives contain the executable; installers also configure the service.
+Standalone binaries and ZIP / TAR.GZ archives are available for all seven targets. **Windows MSI installers for 1.0.1 are pending a Windows packaging host**; the Windows downloads above are portable agents and do not install a service automatically. Older 1.0.0 MSIs do not contain these changes.
 
-**Initial build status:** evaluation builds, without Windows Authenticode signing or macOS Developer ID signing/notarization. Automatic updates are disabled because no update verification key is pinned. Operating systems may warn about or block these packages. Do not disable system security to install them.
+These evaluation builds have no Windows Authenticode signature or macOS Developer ID signing/notarization. Automatic updates are disabled; upgrades are manual. Operating systems may warn about or block unsigned packages. Do not disable system security to install them.
 
 ## Before installation
 
-- Obtain a one-time pairing code and API server URL from your TrackOlap administrator. Codes expire after 15 minutes and belong to the environment where they were created.
-- Use Windows 10+/Server 2016+, [macOS 12+ for these Go 1.26 binaries](https://go.dev/doc/go1.26#darwin), or a supported Linux system matching your package architecture.
+- Ask your TrackOlap administrator to enable Local Connectors, open **Admin → Local Connectors**, and add a connector to obtain a one-time pairing code.
+- Obtain the API server URL for the same environment. Pairing codes expire after 15 minutes.
+- Use Windows 10+/Server 2016+, macOS 12+, or Linux matching the download architecture.
 - Allow outbound HTTPS to your API host and synchronize the system clock.
-- For Tally, install on the Tally PC, enable its HTTP interface on port 9000, and leave the required company open. The backend must have connector support deployed.
+- Install on a computer that can reach the HTTP/TCP destinations you want to approve. `127.0.0.1` always means that connector computer.
 
-## Windows
+## Windows portable agent
 
-Run the MSI matching your architecture as administrator. It installs the automatic `tlp-connector` service, displayed as **TrackOlap Connector**.
-
-Unattended x64 installation, from an elevated Command Prompt:
+Extract the ZIP to a dedicated folder. From an elevated Command Prompt in that folder, use the executable matching your download; this example is x64:
 
 ```bat
-msiexec /i "tlp-connector-1.0.0-x64.msi" /qn PAIRCODE="YOUR-PAIRING-CODE" SERVERURL="https://YOUR-API-HOST"
+tlp-connector_windows_amd64.exe -version
+tlp-connector_windows_amd64.exe -pair "YOUR-PAIRING-CODE" -server "https://YOUR-API-HOST"
+tlp-connector_windows_amd64.exe
 ```
 
-To pair later, run from the installation folder in an elevated Command Prompt:
-
-```bat
-tlp-connector.exe -pair "YOUR-PAIRING-CODE" -server "https://YOUR-API-HOST"
-tlp-connector.exe -service restart
-tlp-connector.exe -service status
-```
-
-The usual folder is `C:\Program Files\TrackOlap\Connector`; x86 uses `C:\Program Files (x86)\TrackOlap\Connector` on 64-bit Windows. The service redeems the staged code on startup.
+The last command runs in the foreground. Leave it running for connectivity; Ctrl+C stops it. Use `386` for x86 or `arm64` for ARM64. Do not run a second agent against the same state directory while an existing connector service is running. Persistent Windows service installation via MSI is pending.
 
 ## macOS
 
-Choose the Apple silicon or Intel PKG. For a package approved by your administrator:
+Choose the Apple silicon or Intel PKG approved by your administrator:
 
 ```sh
-sudo installer -pkg ./tlp-connector-1.0.0-arm64.pkg -target /
+sudo installer -pkg ./tlp-connector-1.0.1-arm64.pkg -target /
 sudo /usr/local/bin/tlp-connector -pair "YOUR-PAIRING-CODE" -server "https://YOUR-API-HOST"
 sudo launchctl kickstart -k system/com.trackolap.connector
 ```
 
-Use `amd64` in the package filename for Intel. The package installs a LaunchDaemon. macOS agent builds do not remove Tally's current same-machine Windows setup requirement.
+Use `amd64` in the filename for Intel. The package installs a LaunchDaemon.
 
 ## Linux
 
 Debian / Ubuntu, substituting `arm64` when appropriate:
 
 ```sh
-sudo apt install ./tlp-connector_1.0.0_amd64.deb
+sudo apt install ./tlp-connector_1.0.1_amd64.deb
 ```
 
 RPM-based systems, substituting `aarch64` when appropriate:
 
 ```sh
-sudo dnf install ./tlp-connector-1.0.0-1.x86_64.rpm
+sudo dnf install ./tlp-connector-1.0.1-1.x86_64.rpm
 ```
 
-Pair as the service account so credential ownership is correct:
+For a new installation, pair as the service account:
 
 ```sh
 sudo -u trackolap-connector /usr/bin/tlp-connector -pair "YOUR-PAIRING-CODE" -server "https://YOUR-API-HOST"
@@ -88,39 +81,42 @@ sudo systemctl restart tlp-connector
 sudo systemctl status tlp-connector
 ```
 
-Use the package manager for Linux updates. Linux packages do not add SQL/ODBC connector implementations.
+Upgrade an existing installation using its package manager. Keep its state directory to preserve pairing; do not issue a new pairing code for a routine upgrade.
 
-## First sync
+## Configure and test connectivity
 
-Ask your administrator to add an enabled Tally source with host `127.0.0.1`, port `9000`, the Tally company and a customer owner. Trigger **Sync now** and check the activity and imported customers. Portal availability depends on your frontend version; the backend also supports administrator API setup.
+1. Open the paired connector's detail page and wait for it to show online.
+2. Under **Approved targets**, add an alias, literal destination IP address, and port. Wait for its status to become **Applied**. Deleting a target blocks new connections and closes the agent's current tunnel generation; applications may need to reconnect.
+3. Use **HTTP test** for a method, relative path, headers and body, or **TCP test** to check socket connectivity. A TCP success does not execute a SQL query or authenticate to the destination application.
+4. Review **HTTP / TCP traffic** and **Recent activity** for results, duration and socket IPs. HTTP test bodies are transient; raw TCP payloads are not retained in traffic logs.
 
-Version 1.0.0 requires an explicit sync command; scheduled synchronization is not implemented. It reads Tally data and does not write back to Tally.
+Portal target management requires the matching backend/frontend deployment and the Local Connector feature flag. HTTP/TCP tests additionally require backend `connector.tcp.enabled=true`. New targets are delivered through configuration polling, then confirmed by heartbeat. No database-specific driver or business integration setup is required for this generic transport.
 
 ## Verify downloads
 
-Download `SHA256SUMS` with the files. Linux can verify the downloaded subset:
+Download `SHA256SUMS` with the assets. On Linux:
 
 ```sh
 sha256sum --ignore-missing -c SHA256SUMS
 ```
 
-On macOS, compare the output with the matching entry in `SHA256SUMS`:
+On macOS, compare this output with its entry in `SHA256SUMS`:
 
 ```sh
-shasum -a 256 tlp-connector-1.0.0-arm64.pkg
+shasum -a 256 tlp-connector-1.0.1-arm64.pkg
 ```
 
 On Windows PowerShell:
 
 ```powershell
-Get-FileHash .\tlp-connector-1.0.0-x64.msi -Algorithm SHA256
+Get-FileHash .\tlp-connector_windows_amd64.zip -Algorithm SHA256
 ```
 
-Checksums detect corruption; they are not publisher signatures.
+Checksums detect corruption; they are not publisher signatures. `BUILDINFO.json` records the source revision, toolchain and validation scope.
 
-## Diagnostics
+## Diagnostics and state
 
-The local console is restricted to loopback and a per-run token. In this build, launching a second `-console` or `-doctor` process while the service owns its database can fail with a lock timeout. For CLI diagnostics, stop the service, run `-doctor`, then start it again. Use the same state directory and, on Linux, the `trackolap-connector` service account.
+The local console is loopback-only and requires a per-run token. A second console/doctor process can conflict with the running service's database lock. For CLI diagnostics, stop the service, run `-doctor` using the same state directory and service account, then start the service again.
 
 | Platform | State and logs |
 | --- | --- |
@@ -128,10 +124,4 @@ The local console is restricted to loopback and a per-run token. In this build, 
 | macOS | `/Library/Application Support/TrackOlap/Connector` |
 | Linux | `/var/lib/trackolap-connector`; `journalctl -u tlp-connector` |
 
-Keep pairing codes and configuration files private. Uninstall normally preserves the agent identity; ask your administrator to revoke the agent before permanently retiring it. These builds have no desktop tray icon.
-
-For support, contact your TrackOlap administrator or [TrackOlap](https://www.trackolap.com).
-
-## About this repository
-
-Releases are prepared and uploaded manually. This repository contains no build scripts or CI/CD workflows. Installers are release assets, not application source or files committed to Git history. The new repository icon is used by refreshed builds; existing draft installers retain the artwork they were built with until a complete replacement build is uploaded.
+Keep pairing codes and configuration files private. Uninstall normally preserves the agent identity; ask your administrator to revoke the agent before permanently retiring it. These builds have no desktop tray UI. For support, contact your TrackOlap administrator or [TrackOlap](https://www.trackolap.com).
