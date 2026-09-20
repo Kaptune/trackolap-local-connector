@@ -6,7 +6,27 @@ Install the TrackOlap background agent to securely reach approved HTTP and TCP s
 
 This public repository contains **end-user downloads and installation instructions only**. Application source and packaging are maintained separately in `trackolap-connector`. Releases are built and published manually; there is no CI/CD.
 
-## Downloads
+## Windows service and tray preview — 1.0.2
+
+The new Windows installer runs the connector as a background service, starts it with
+Windows, and adds a tray app at sign-in. The tray is **red before pairing** and **green
+when configured**. Click it to enter the API host and code, or view connector ID,
+connection status, last successful sync and heartbeat. Closing the window keeps the
+service running.
+
+| Windows architecture | Standalone installer |
+| --- | --- |
+| Intel/AMD 64-bit | [Download x64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.2/tlp-connector-1.0.2-x64-setup.exe) |
+| Intel/AMD 32-bit | [Download x86 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.2/tlp-connector-1.0.2-x86-setup.exe) |
+| ARM64 | [Download ARM64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.2/tlp-connector-1.0.2-arm64-setup.exe) |
+
+**Unsigned Windows preview:** compilation, package inspection and local automated tests
+passed; actual Windows installation, reboot and tray interaction have not been tested
+because no Windows host was available. See the [Windows installation guide](WINDOWS_INSTALL.md)
+and [1.0.2 release notes](releases/1.0.2.md). These are self-contained EXE installers;
+MSI packaging remains pending. The existing macOS/Linux downloads below remain at 1.0.1.
+
+## Multi-platform downloads — 1.0.1
 
 Version **1.0.1**, evaluation prerelease. See the [release notes](https://github.com/Kaptune/trackolap-local-connector/blob/main/releases/1.0.1.md) and [all downloads](https://github.com/Kaptune/trackolap-local-connector/releases/tag/v1.0.1).
 
