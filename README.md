@@ -106,7 +106,7 @@ and local controls differ:
 | Linux | Background systemd service, with command-line pairing and service management. | [Linux installation](INSTALLATION.md#linux) |
 
 Upgrades are manual. Follow the installation guide to preserve your pairing configuration.
-Available package formats, architectures, release versions and validation limitations
+Available package formats, architectures and the latest version
 are listed on the [Downloads page](DOWNLOADS.md).
 
 ## Troubleshooting

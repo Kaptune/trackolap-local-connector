@@ -8,8 +8,8 @@ explains shared capabilities; each release describes its package-specific change
 
 ## Latest release — 1.0.7
 
-Upgrade installed agents before enabling mandatory command-lease validation on the
-backend. Existing pairing and approved targets are retained during a normal upgrade. See [release notes](releases/1.0.7.md) for compatibility and validation details.
+Install the package matching your computer. Normal upgrades preserve pairing and
+approved targets. See [what's new](releases/1.0.7.md).
 
 ## Windows desktop installer — 1.0.7
 
@@ -23,13 +23,7 @@ architecture as your existing installation when upgrading.
 | ARM64 | [Download ARM64 setup](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.7/tlp-connector-1.0.7-arm64-setup.exe) |
 
 See the [Windows guide](WINDOWS_INSTALL.md) and [release notes](releases/1.0.7.md).
-The installer, background service and tray app are signed as **Kaptune Media India
-Private Limited**, using SHA-256 and Sectigo timestamps. Signatures and package checks
-passed; Windows installation and runtime validation remain pending.
-
 ## macOS and Linux downloads — 1.0.7
-
-Version **1.0.7**, evaluation prerelease. See the [release notes](https://github.com/Kaptune/trackolap-local-connector/blob/main/releases/1.0.7.md) and [all downloads](https://github.com/Kaptune/trackolap-local-connector/releases/tag/v1.0.7).
 
 | Platform | Architecture | Download |
 | --- | --- | --- |
@@ -40,9 +34,8 @@ Version **1.0.7**, evaluation prerelease. See the [release notes](https://github
 | RPM-based Linux | AMD64 | [tlp-connector-1.0.7-1.x86_64.rpm](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.7/tlp-connector-1.0.7-1.x86_64.rpm) |
 | RPM-based Linux | ARM64 | [tlp-connector-1.0.7-1.aarch64.rpm](https://github.com/Kaptune/trackolap-local-connector/releases/download/v1.0.7/tlp-connector-1.0.7-1.aarch64.rpm) |
 
-Windows is distributed only as the service-and-tray setup EXEs listed above. Portable Windows EXEs and ZIPs are no longer included in this release. Standalone binaries and TAR.GZ archives remain available for macOS and Linux.
-
-Windows packages have Authenticode signatures. macOS packages have no Developer ID signing or notarization, and Linux packages are unsigned. This remains an evaluation prerelease. Automatic updates are disabled; upgrades are manual.
+Windows downloads install the background service and tray app. Standalone binaries and
+TAR.GZ archives are also available for macOS and Linux. Upgrades are manual.
 
 ## Verify downloads
 
@@ -65,8 +58,4 @@ Get-FileHash .\tlp-connector-1.0.7-x64-setup.exe -Algorithm SHA256
 Get-AuthenticodeSignature .\tlp-connector-1.0.7-x64-setup.exe
 ```
 
-Checksums detect corruption; they are not publisher signatures. `BUILDINFO.json` records the source revision, toolchain and validation scope.
-
-Release assets include build-time documentation snapshots. Use the repository's
-[platform guide](README.md) and [installation guide](INSTALLATION.md) for current
-instructions. Releases are built and published manually.
+Use the [installation guide](INSTALLATION.md) for setup, pairing and upgrades.

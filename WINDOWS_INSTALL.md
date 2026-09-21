@@ -13,9 +13,8 @@ Choose the standalone setup for your architecture (x64, x86 or ARM64) from [Down
 Run it, accept installation and Windows administrator elevation. Setup installs the
 service and tray, registers tray startup for sign-in, and opens the tray without
 administrator elevation. The current installer, service and tray are Authenticode-signed
-as **Kaptune Media India Private Limited**, with Sectigo timestamps. Check the installer's
-**Properties → Digital Signatures** before installation. Windows runtime validation
-remains pending; follow your organization's application policies.
+as **Kaptune Media India Private Limited**. You can check the publisher under
+**Properties → Digital Signatures**.
 
 Click the tray icon to open the small native window. The title and footer show the
 application version even before pairing or when the service is unavailable. Configured
@@ -97,7 +96,7 @@ folder while preserving saved pairing and configuration; **Reset** is not requir
 
 If repair cannot finish, setup identifies the failed operation and path and leaves the
 service stopped. Share that error with your administrator. Linked or redirected state
-folders are not supported by the repair. Check the release notes for validation status.
+folders are not supported by the repair.
 
 ## Local access and diagnostics
 
@@ -106,5 +105,4 @@ service requires Windows administrator approval. Pairing credentials are stored 
 the background service and are not displayed in the tray.
 
 For state and log locations, see [diagnostics and state](INSTALLATION.md#diagnostics-and-state).
-Check [Downloads](DOWNLOADS.md) and the selected release's notes for package signing
-and validation status.
+Get the current installer from [Downloads](DOWNLOADS.md).
